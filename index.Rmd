@@ -1,84 +1,77 @@
 ---
-title: "Exploratory Analysis"
-output: html_document
+title: "Exploratory Analysis of Amazon Marketplace Products"
+author: "Annie Lu al0907@uw.edu"
+date: '2024-05-12'
 ---
+Keywords: Amazon, online marketplace, ecommerce, business, product sales
 
-## Project title
+Affiliation: University of Washington INFO 201
 
-Give your project a concise, interesting title that summarizes the entirety of your project
+# Abstract
 
-### Authors
+Our main question is "How are the ratings of a product on Amazon correlated with the price of the product?" This question is important because as consumers generally prefer lower priced items, we want to determine if there is any correlation between items with a lower price point and the satisfaction of consumers, whether it be due to quality, uses, and so on. To address the question, we will conduct research in RStudio using R in order to see if there are any relationships between a product and its rating.
 
-Names of your team members
+We are concerned with how customers rate products, because a rating determines essentially what the customers liked and disliked about a specific product. To address this concern, we plan to take the ratings of the products, and through our findings, uncover the reviews behind the rating for these products, to get a deeper insight into why customers rated the product the way they did (looking for keywords). Then, to tie this information back to the research question, we will be making inferences about the ratings and the price point of the items based off the reviews.
 
-### Date
+Consider that the data only has ratings of products, and the ratings are averaged for each product. This is important because we do not know the spread of the ratings for the products, and we are missing key words that reviews would give us regarding what customers think about the product. Accordingly, we plan to do our analysis by first separating the products by category, then investigating the correlation between price and rating, and then, looking up the product given the URL in order to observe the distribution of the ratings and do more analysis regarding the distribution and the keywords from the reviews of the product.
 
-Winter 2022
+# Introduction
 
-### Abstract
+This study aims to investigate the relationship between the price of a product sold on Amazon, and its rating. The results from this study will be used to drive design decisions for what types of products businesses on Amazon should release in order to leave consumers satisfied with both price and condition/usefulness/durability of a product.
 
-No more than three sentences that summarize your project. Focus on the very most important aspects. For example: (1) "Our main question is .... This question is important because .... To address the question, we will ...." (2) "We are concerned with ..., because .... To address this concern, we plan to ...." (3) "Consider that .... This is important because .... Accordingly, we plan to ...."
+1. Which categories have the best selling Amazon products?
+- This question is asked in order to find out which categories have the highest number of sales and best-selling products (denoted by a boolean).This question is important because we want to find out which categories have a lot of sales first, so we can compare ratings and their prices within each category to narrow our research scope.
 
-### Keywords
+2. Which Amazon product(s) have the most sales?
+- This question is asked in order to find which Amazon products overall have the highest number of sales. This question is important because after finding the categories with the best selling Amazon products, we want to find individual products in order to research them specifically and read reviews to connect them to the rating the reviewer gave.
 
-3-5 keywords that summarize your project.
-(e.g., "Keywords: human physiology; bicycle exercise; Gen Z; times-series data")
+3. What are the cheapest/most expensive products sold on Amazon?
+- This question is asked in order to gauge pricing of a product on Amazon. This question is important as it is an exploratory glimpse into what items are priced higher or lower, so we can research the individual products and read reviews to connect them to the rating the reviewer gave.
 
-### Introduction  
+4. What is the average price of products in per category on Amazon?
+- This question is asked in order to gauge pricing of a product within a category on Amazon. This quesiton is important because we want to get a sense of which categories of products will have cheaper items, and which will have more expensive items.
 
-Briefly introduce your project.  Include 3-5 research questions. What motivates the questions? Why are they important? (at least 200 words)
+5. How are ratings of a product on Amazon correlated with the price of the product?
+- This question is asked as our main research question. This question is important because we want to investigate the products where the price of an item where it is cheap enough to satisfy consumers, yet also good enough to encourage the customer to leave a good review, in order to give insights for businesses on Amazon on how they should design their products to reach this balance point between price and satisfaction.
 
-### Related Work  
+# Related Work
+There has been a lot of research done for what products are best-selling on Amazon.
 
-Describe your topic and related work in this space. You must include 3 citations to related work (URLs to similar work, high quality articles from the popular press, research papers, etc. ) Please use a standard citation style of your choice. (at least 200 words)
+This first research project on Kaggle [3] is a project that uses the Amazon Products dataset as outlined in the section below. It is coded in Python and goes to research top 25 categories of products sold, and more specifically, which products had the highest number of units sold. It also includes the most expensive products sold. A lot of research is similar to what this project will cover, but this project will be researching the datasets using R programming language. 
 
-### The Dataset
+This second blog post from Helium 10 [1] contains information about the top 25 best selling products on Amazon in April 2024. It is targeted towards sellers who aim to start or grow a business on Amazon. It rates the product using three different categories of criteria: product images, listing text, and reviews & ratings, and depending on how many criteria (i.e. one criteria under "product images" is if the product has 7 or more images) the product satisfies, it is ranking according in this article. This article gives a great general idea of what products sell well on Amazon.
 
-Where did you find the data? Please include a link to the data source  
-Who collected the data?  
-How was the data collected or generated?  
-Why was the data collected?  
-How many observations (rows) are in your data?  
-How many features (columns) are in the data?  
-What, if any, ethical questions or questions of power do you need to consider when working with this data?  
-What are possible limitations or problems with this data?   (at least 200 words)
+Finally, the third post, a blog post from SellerApp [2], contains information on how to find top-selling products on Amazon. It analyzes the top selling products along with best-selling categories on Amazon, which products are growing, and how a seller can choose a product and product category to sell in.
 
-### Implications
+While these three articles covered how to find top-selling products on Amazon, and what determines a top-selling product, this project proposal aims to uncover a new scope using R as a programming language. It aims to find relationships between ratings and price of items, which the Kaggle project did not do, and these relationships will be used for recommending how businesses could design products better for their customers.
 
-Assuming you answer your research questions, briefly describe the expected or possible implications for technologists, designers, and policymakers. (at least 150 words)
+[1] Helium 10. (n.d.). Top Selling Items on Amazon. Helium 10 Blog. Retrieved from https://www.helium10.com/blog/top-selling-items-on-amazon/
 
-### Limitations & Challenges
-What challenges or limitations might you need to address with your project idea more broadly? Briefly discuss. (at least 150 words)
+[2] SellerApp. (n.d.). Best Selling Products on Amazon. SellerApp Blog. Retrieved from https://www.sellerapp.com/blog/best-selling-products-on-amazon/
 
-### Summary Information
+[3] Sevta, K. (n.d.). Best Products to Sell on Amazon. Kaggle. Retrieved from https://www.kaggle.com/code/ksevta/best-products-to-sell-on-amazon
 
-Write a summary paragraph of findings that includes the 5 values calculated from your summary information R script
+# Dataset
 
-### Table
+I found the data on Kaggle. It was one of the recommended datasets when I looked for datasets related to e-commerce. The dataset can be found at https://www.kaggle.com/datasets/asaniczka/amazon-products-dataset-2023-1-4m-products/data?select=amazon_products.csv.
 
-Include a table of aggregate information
+The person that collected the data was a user named ASANICZKA.
 
-Describe why you included the table and what information it reveals
+The data from the csv files were scraped from Amazon.com.
 
-### Chart 1
+The data was collected in order to get an in-depth idea of what products sell best, which SEO titles generate the most sales, the best price range for a product in a given category, and much more.
 
-Include a chart
+Rows: 1426337
 
-Describe why you chose this chart and what information it reveals
+Columns: 11 in amazon-products.csv
 
-Here's an example of how to run an R script inside an RMarkdown file:
 
-``````{r, echo = FALSE, code = readLines("chart1_example.R")}
-```
+# Implications
 
-### Chart 2
+The implications of this project will be that business owners on Amazon can use these guidelines in order to determine what products to sell and if they are currently selling items, they can use the results of this project to determine how to improve the designs of their products to make customers satisfied. Designers of these products can take into account how the ratings and price points of the products relate in order to meet business needs. These business needs may involve changing the features of a product, lowering cost, etc., all which industrial designers play a part in. Companies will have to consider how to create balance between cost and functionality in order to not only keep their existing customers, but encourage new ones to buy their product. The findings from this project may help drive that. Overall, the results of this project mainly aim to improve business on Amazon for sellers and their products. 
 
-Include a chart
+# Limitations
 
-Describe why you chose this chart and what information it reveals
+The limitations/problems with this dataset are that first, it does not have the reviews of a product given, only the rating. The reviews would be very useful for this project as they have key words that, when analyzed, could discover issues and satisfactory parts of the product that the customer bought, depending on if they left a good or bad review. Second, the rating appears to be averaged, as there is only one rating for each product, and not a distribution of 1-5 star ratings, so this has to be accounted for because the average may not account for, a 1-star rating when majority are 5-stars for example.
 
-### Chart 3
-
-Include a chart
-
-Describe why you chose this chart and what information it reveals
+While this project aims to discover the relationship between ratings and the price of a product, it cannot cover the full scope of customers of these products and their feelings about these products. This dataset has over 1 million Amazon products and the more popular products will likely have a lot of reviews. 1 month is simply not enough time to cover all of the reviews for all products. In fact, the data analyzed may not be able to include all 12 million products - perhaps only the top 5-10 bestseller categories will be analyzed for a relationship between price and ratings of the products in said categories. This project will be a really simplified version and the final report will include the simplications and address the limited timeline of work done. Also, because only correlations will be analyzed, we won't be able to make any 100% certain conclusions regarding how products will do for sellers, but the correlations can be a good guideline for businesses to improve their products. More in depth analysis of this area would be something interesting to come from this.
