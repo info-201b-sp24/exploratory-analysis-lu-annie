@@ -75,3 +75,20 @@ The implications of this project will be that business owners on Amazon can use 
 The limitations/problems with this dataset are that first, it does not have the reviews of a product given, only the rating. The reviews would be very useful for this project as they have key words that, when analyzed, could discover issues and satisfactory parts of the product that the customer bought, depending on if they left a good or bad review. Second, the rating appears to be averaged, as there is only one rating for each product, and not a distribution of 1-5 star ratings, so this has to be accounted for because the average may not account for, a 1-star rating when majority are 5-stars for example.
 
 While this project aims to discover the relationship between ratings and the price of a product, it cannot cover the full scope of customers of these products and their feelings about these products. This dataset has over 1 million Amazon products and the more popular products will likely have a lot of reviews. 1 month is simply not enough time to cover all of the reviews for all products. In fact, the data analyzed may not be able to include all 12 million products - perhaps only the top 5-10 bestseller categories will be analyzed for a relationship between price and ratings of the products in said categories. This project will be a really simplified version and the final report will include the simplications and address the limited timeline of work done. Also, because only correlations will be analyzed, we won't be able to make any 100% certain conclusions regarding how products will do for sellers, but the correlations can be a good guideline for businesses to improve their products. More in depth analysis of this area would be something interesting to come from this.
+
+## Data Cleaning Code
+```{r}
+#library(dplyr)
+
+#amazon_products <- read.csv("/Users/annielu/Downloads/amazon_products.csv")
+#amazon_categories <- read.csv("/Users/annielu/Downloads/amazon_categories.csv")
+
+#amazon_all <- full_join(amazon_products, amazon_categories, by = c("category_id" = "id"))
+
+#amazon_all <- amazon_all %>%
+ # group_by(category_name) %>%
+ # filter(reviews != 0) %>%
+# filter(boughtInLastMonth != 0)
+
+#file_path <- "/Users/annielu/Downloads/amazon_all.csv"
+#write.csv(amazon_all, file = file_path, row.names = FALSE)
