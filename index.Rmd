@@ -109,3 +109,38 @@ ggplot(amazon_all, aes(x = stars, y = price)) +
        x = "Stars",
        y = "Price")
 ```
+
+## Chart 2
+```{r}
+library(ggplot2)
+library(dplyr)
+
+amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
+amazon_all_2 <- select(amazon_all, price, boughtInLastMonth)
+
+ggplot(amazon_all_2, aes(x = price, y = boughtInLastMonth)) +
+  geom_point() +
+  labs(title = "Price v. Purchases in Last Month",
+       x = "Price",
+       y = "Purchases In Last Month")
+```
+
+## Chart 3
+```{r}
+library(ggplot2)
+library(dplyr)
+
+amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
+
+category_price_summaries <- amazon_all %>%
+  group_by(category_name) %>%
+  summarize(total_price = sum(price)) %>%
+  arrange(desc(total_price)) %>%
+  slice_head(n = 5)
+
+ggplot(category_price_summaries, aes(x = category_name, y = total_price)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Total Price by Category",
+       x = "Category Name",
+       y = "Total Price")
+```
