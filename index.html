@@ -255,10 +255,9 @@ pre code {
 #file_path &lt;- &quot;/Users/annielu/Downloads/amazon_all.csv&quot;
 #write.csv(amazon_all, file = file_path, row.names = FALSE)</code></pre>
 </div>
-<div id="chart-1" class="section level2">
-<h2>Chart 1</h2>
-<pre class="r"><code>library(ggplot2)
-library(dplyr)</code></pre>
+<div id="table" class="section level2">
+<h2>Table</h2>
+<pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -268,6 +267,28 @@ library(dplyr)</code></pre>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>amazon_all &lt;- read.csv(&quot;/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv&quot;)
+head(amazon_all)</code></pre>
+<pre><code>##                             productURL stars reviews  price isBestSeller
+## 1 https://www.amazon.com/dp/B08XWVX62X   4.1   27918 152.99        False
+## 2 https://www.amazon.com/dp/B009ZJ2M7G   4.5   47104 181.36        False
+## 3 https://www.amazon.com/dp/B07PN7DPKX   4.2     497 499.99        False
+## 4 https://www.amazon.com/dp/B091SWWH59   4.4   14469  99.99         True
+## 5 https://www.amazon.com/dp/B005KMDV9A   4.5   34651 199.99        False
+## 6 https://www.amazon.com/dp/B09QQ9T4XY   4.4   25614 279.99        False
+##   boughtInLastMonth                category_name
+## 1               600 Vacuum Cleaners &amp; Floor Care
+## 2              4000 Vacuum Cleaners &amp; Floor Care
+## 3               200 Vacuum Cleaners &amp; Floor Care
+## 4              3000 Vacuum Cleaners &amp; Floor Care
+## 5              5000 Vacuum Cleaners &amp; Floor Care
+## 6              6000 Vacuum Cleaners &amp; Floor Care</code></pre>
+</div>
+<div id="chart-1" class="section level2">
+<h2>Chart 1</h2>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)
+
+amazon_all &lt;- read.csv(&quot;/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv&quot;)
 
 amazon_all &lt;- select(amazon_all, stars, price)
 
