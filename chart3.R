@@ -13,4 +13,5 @@ ggplot(category_price_summaries, aes(x = category_name, y = total_price)) +
   geom_bar(stat = "identity") +
   labs(title = "Total Price by Category",
        x = "Category Name",
-       y = "Total Price")
+       y = "Total Price") +
+  theme(axis.text.x = element_text(size = 6))

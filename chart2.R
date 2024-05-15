@@ -8,4 +8,5 @@ ggplot(amazon_all_2, aes(x = price, y = boughtInLastMonth)) +
   geom_point() +
   labs(title = "Price v. Purchases in Last Month",
        x = "Price",
-       y = "Purchases In Last Month")
+       y = "Purchases In Last Month") +
+  coord_cartesian(xlim = c(0, 2000), ylim = c(0, 11000))
