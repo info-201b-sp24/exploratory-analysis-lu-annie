@@ -28,7 +28,7 @@ This study aims to investigate the relationship between the price of a product s
 3. What are the cheapest/most expensive products sold on Amazon?
 - This question is asked in order to gauge pricing of a product on Amazon. This question is important as it is an exploratory glimpse into what items are priced higher or lower, so we can research the individual products and read reviews to connect them to the rating the reviewer gave.
 
-4. What is the average price of products in per category on Amazon?
+4. What is the average price of products per category on Amazon?
 - This question is asked in order to gauge pricing of a product within a category on Amazon. This quesiton is important because we want to get a sense of which categories of products will have cheaper items, and which will have more expensive items.
 
 5. How are ratings of a product on Amazon correlated with the price of the product?
@@ -86,24 +86,30 @@ There are 110443 rows/products in this dataset. The maximum price found for prod
 ```{r}
 library(dplyr)
 
+# read csv
 amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
 
 summary_info <- list()
 
+# calculates num rows
 summary_info$num_observations <- nrow(amazon_all)
 
+# calculates max price
 summary_info$max_price <- amazon_all %>%
   filter(price == max(price, na.rm = T)) %>%
   select(price)
 
+# calculates max rating
 summary_info$max_rating <- amazon_all %>%
   filter(stars == max(stars, na.rm = T)) %>%
   select(stars)
 
+# calculated most purchased recently
 summary_info$most_bought_recently <- amazon_all %>%
   filter(boughtInLastMonth == max(boughtInLastMonth, na.rm = T)) %>%
   select(boughtInLastMonth)
 
+# calculates category with the most bestsellers
 summary_info$category_most_bestsellers  <- amazon_all %>%
   group_by(category_name) %>%
   filter(isBestSeller == "True") %>%
@@ -143,8 +149,10 @@ The table is grouped by category and reveals what the average price, average rat
 ```{r}
 library(dplyr)
 
+# read csv
 amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
 
+# group table by category name and calculate average price, stars, and num reviews
 amazon_all_table <- amazon_all %>%
   select(category_name, stars, reviews, price) %>%
   group_by(category_name) %>%
@@ -154,52 +162,58 @@ amazon_all_table <- amazon_all %>%
     average_price = mean(price)
   )
 
-  
+# displays short ver of table
 head(amazon_all_table)
 ```
 
 ## Chart 1
 
-The purpose of Chart 1 is...
+The purpose of Chart 1 is to create a histogram that displays ratings of the products in amazon_all along with the average price of items per category. This is intended to answer question 5: How are ratings of a product on Amazon correlated with the price of the product?
 
-The insights from Chart 1...
+The insights from Chart 1 are that products with an average rating between 1 - 1.9 stars had a higher average price of product compared to anything rated 2 stars and above. For products rated between 1 - 1.9 stars, the average price was $40, which was greater than the other bins as seen in the chart below. Many factors could contribute to this higher average - some being that customers rated the product lower due to the high price, higher priced items may have had faulty parts, etc.
 
 ```{r}
 library(ggplot2)
 library(dplyr)
 
+# read csv
 amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
 
+# select only stars and price
 amazon_all <- select(amazon_all, stars, price)
 
+# create bins for histogram and calculate mean prices
 amazon_all <- amazon_all %>%
   mutate(bins = cut(stars, breaks = seq(1, 6, by = 1), labels = c("1-1.9", "2-2.9", "3-3.9", "4-4.9", "5"))) %>%
   group_by(bins) %>%
   summarize(price = mean(price))
   
-
-# Create the histogram
+# plot histogram with ggplot2
 ggplot(amazon_all, aes(x = bins, y = price)) +
   geom_histogram(stat = "identity") +
   labs(title = "Average Price Distribution by Star Ratings",
        x = "Star Ratings",
-       y = "Price") +
+       y = "Average Price") +
   scale_x_discrete(labels = c("1-1.9", "2-2.9", "3-3.9", "4-4.9", "5"))
 ```
 
 ## Chart 2
 
-The purpose of Chart 2 is...
+The purpose of Chart 2 is to find the relationship between price and purchases of a product in the amazon_all dataset. The findings are intended to answer or find insights toward question 2: Which Amazon product(s) have the most sales? This adds an extra relationship to look for - if price is related to number of purchases of a product.
 
-The insights from Chart 2...
+The insights from Chart 2 show no clear relationship between price of an item and the number of purchases in the last month. But it can be said that it appears more people purchase cheaper items on Amazon, as majority of the points are clustered along the lower price range on the chart.
 
 ```{r}
 library(ggplot2)
 library(dplyr)
 
+# read csv
 amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
+
+# select only price and boughtInLastMonth columns
 amazon_all_2 <- select(amazon_all, price, boughtInLastMonth)
 
+# plot scatterplot with ggplot2 and set zoom
 ggplot(amazon_all_2, aes(x = price, y = boughtInLastMonth)) +
   geom_point() +
   labs(title = "Price v. Purchases in Last Month",
@@ -210,26 +224,33 @@ ggplot(amazon_all_2, aes(x = price, y = boughtInLastMonth)) +
 
 ## Chart 3
 
-The purpose of Chart 3 is...
+The purpose of Chart 3 is to answer research question 4: What is the average price of products per category on Amazon? This is done to find any relationships between categories and prices of items.
 
-The insights from Chart 3...
+The insights from Chart 3 show the top 5 categories with the highest average price of products. There is not enough room to showcase more categories, but we can repeat this with lowest average prices to see what categories have cheaper and more expensive products, and if there is any correlation with how the product is rated as well.
 
 ```{r}
 library(ggplot2)
 library(dplyr)
+library(stringr)
 
+# read csv
 amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
 
+# create group by and summarize all categories with average prices and only show top 5
 category_price_summaries <- amazon_all %>%
   group_by(category_name) %>%
-  summarize(total_price = sum(price)) %>%
-  arrange(desc(total_price)) %>%
+  summarize(avg_price = mean(price)) %>%
+  arrange(desc(avg_price)) %>%
   slice_head(n = 5)
 
-ggplot(category_price_summaries, aes(x = category_name, y = total_price)) +
+# wrap for x axis labels
+category_price_summaries$category_name <- str_wrap(category_price_summaries$category_name, width = 10)
+
+# plot bar chart with ggplot2
+ggplot(category_price_summaries, aes(x = category_name, y = avg_price)) +
   geom_bar(stat = "identity") +
-  labs(title = "Total Price by Category",
+  labs(title = "Average Price by Category",
        x = "Category Name",
-       y = "Total Price") +
-  theme(axis.text.x = element_text(size = 6))
+       y = "Average Price") +
+  theme(axis.text.x = element_text(size = 8))
 ```
