@@ -238,6 +238,43 @@ pre code {
 <h1>Limitations</h1>
 <p>The limitations/problems with this dataset are that first, it does not have the reviews of a product given, only the rating. The reviews would be very useful for this project as they have key words that, when analyzed, could discover issues and satisfactory parts of the product that the customer bought, depending on if they left a good or bad review. Second, the rating appears to be averaged, as there is only one rating for each product, and not a distribution of 1-5 star ratings, so this has to be accounted for because the average may not account for, a 1-star rating when majority are 5-stars for example.</p>
 <p>While this project aims to discover the relationship between ratings and the price of a product, it cannot cover the full scope of customers of these products and their feelings about these products. This dataset has over 1 million Amazon products and the more popular products will likely have a lot of reviews. 1 month is simply not enough time to cover all of the reviews for all products. In fact, the data analyzed may not be able to include all 12 million products - perhaps only the top 5-10 bestseller categories will be analyzed for a relationship between price and ratings of the products in said categories. This project will be a really simplified version and the final report will include the simplications and address the limited timeline of work done. Also, because only correlations will be analyzed, we won't be able to make any 100% certain conclusions regarding how products will do for sellers, but the correlations can be a good guideline for businesses to improve their products. More in depth analysis of this area would be something interesting to come from this.</p>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: 'dplyr'</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>amazon_all &lt;- read.csv(&quot;/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv&quot;)
+
+summary_info &lt;- list()
+
+summary_info$num_observations &lt;- nrow(amazon_all)
+
+summary_info$max_price &lt;- amazon_all %&gt;%
+  filter(price == max(price, na.rm = T)) %&gt;%
+  select(price)
+
+summary_info$max_rating &lt;- amazon_all %&gt;%
+  filter(stars == max(stars, na.rm = T)) %&gt;%
+  select(stars)
+
+summary_info$most_bought_recently &lt;- amazon_all %&gt;%
+  filter(boughtInLastMonth == max(boughtInLastMonth, na.rm = T)) %&gt;%
+  select(boughtInLastMonth)
+
+summary_info$category_most_bestsellers  &lt;- amazon_all %&gt;%
+  group_by(category_name) %&gt;%
+  filter(isBestSeller == &quot;True&quot;) %&gt;%
+  summarize(count = n()) %&gt;%
+  arrange(desc(count)) %&gt;%
+  slice(1) %&gt;%
+  select(category_name, count)</code></pre>
+</div>
 <div id="data-cleaning-code" class="section level2">
 <h2>Data Cleaning Code</h2>
 <pre class="r"><code>#library(dplyr)
@@ -257,31 +294,30 @@ pre code {
 </div>
 <div id="table" class="section level2">
 <h2>Table</h2>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>amazon_all &lt;- read.csv(&quot;/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv&quot;)
-head(amazon_all)</code></pre>
-<pre><code>##                             productURL stars reviews  price isBestSeller
-## 1 https://www.amazon.com/dp/B08XWVX62X   4.1   27918 152.99        False
-## 2 https://www.amazon.com/dp/B009ZJ2M7G   4.5   47104 181.36        False
-## 3 https://www.amazon.com/dp/B07PN7DPKX   4.2     497 499.99        False
-## 4 https://www.amazon.com/dp/B091SWWH59   4.4   14469  99.99         True
-## 5 https://www.amazon.com/dp/B005KMDV9A   4.5   34651 199.99        False
-## 6 https://www.amazon.com/dp/B09QQ9T4XY   4.4   25614 279.99        False
-##   boughtInLastMonth                category_name
-## 1               600 Vacuum Cleaners &amp; Floor Care
-## 2              4000 Vacuum Cleaners &amp; Floor Care
-## 3               200 Vacuum Cleaners &amp; Floor Care
-## 4              3000 Vacuum Cleaners &amp; Floor Care
-## 5              5000 Vacuum Cleaners &amp; Floor Care
-## 6              6000 Vacuum Cleaners &amp; Floor Care</code></pre>
+<pre class="r"><code>library(dplyr)
+
+amazon_all &lt;- read.csv(&quot;/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv&quot;)
+
+amazon_all_table &lt;- amazon_all %&gt;%
+  select(category_name, stars, reviews, price) %&gt;%
+  group_by(category_name) %&gt;%
+  summarize(
+    average_stars = mean(stars),
+    average_no_reviews = mean(reviews),
+    average_price = mean(price)
+  )
+
+  
+head(amazon_all_table)</code></pre>
+<pre><code>## # A tibble: 6 × 4
+##   category_name                   average_stars average_no_reviews average_price
+##   &lt;chr&gt;                                   &lt;dbl&gt;              &lt;dbl&gt;         &lt;dbl&gt;
+## 1 Abrasive &amp; Finishing Products            4.55              1404           14.3
+## 2 Additive Manufacturing Products          4.45               717.          44.6
+## 3 Arts &amp; Crafts Supplies                   4.54               788.          13.4
+## 4 Automotive Exterior Accessories          4.46               777.          28.3
+## 5 Automotive Tires &amp; Wheels                4.42               980.          36.8
+## 6 Automotive Tools &amp; Equipment             4.47              1069.          47.4</code></pre>
 </div>
 <div id="chart-1" class="section level2">
 <h2>Chart 1</h2>

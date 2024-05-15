@@ -76,6 +76,37 @@ The limitations/problems with this dataset are that first, it does not have the 
 
 While this project aims to discover the relationship between ratings and the price of a product, it cannot cover the full scope of customers of these products and their feelings about these products. This dataset has over 1 million Amazon products and the more popular products will likely have a lot of reviews. 1 month is simply not enough time to cover all of the reviews for all products. In fact, the data analyzed may not be able to include all 12 million products - perhaps only the top 5-10 bestseller categories will be analyzed for a relationship between price and ratings of the products in said categories. This project will be a really simplified version and the final report will include the simplications and address the limited timeline of work done. Also, because only correlations will be analyzed, we won't be able to make any 100% certain conclusions regarding how products will do for sellers, but the correlations can be a good guideline for businesses to improve their products. More in depth analysis of this area would be something interesting to come from this.
 
+## Summary
+```{r}
+library(dplyr)
+
+amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
+
+summary_info <- list()
+
+summary_info$num_observations <- nrow(amazon_all)
+
+summary_info$max_price <- amazon_all %>%
+  filter(price == max(price, na.rm = T)) %>%
+  select(price)
+
+summary_info$max_rating <- amazon_all %>%
+  filter(stars == max(stars, na.rm = T)) %>%
+  select(stars)
+
+summary_info$most_bought_recently <- amazon_all %>%
+  filter(boughtInLastMonth == max(boughtInLastMonth, na.rm = T)) %>%
+  select(boughtInLastMonth)
+
+summary_info$category_most_bestsellers  <- amazon_all %>%
+  group_by(category_name) %>%
+  filter(isBestSeller == "True") %>%
+  summarize(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice(1) %>%
+  select(category_name, count)
+```
+
 ## Data Cleaning Code
 ```{r}
 #library(dplyr)
@@ -99,7 +130,18 @@ While this project aims to discover the relationship between ratings and the pri
 library(dplyr)
 
 amazon_all <- read.csv("/Users/annielu/Desktop/info201 hw/exploratory-analysis-lu-annie/amazon_all.csv")
-head(amazon_all)
+
+amazon_all_table <- amazon_all %>%
+  select(category_name, stars, reviews, price) %>%
+  group_by(category_name) %>%
+  summarize(
+    average_stars = mean(stars),
+    average_no_reviews = mean(reviews),
+    average_price = mean(price)
+  )
+
+  
+head(amazon_all_table)
 ```
 
 ## Chart 1
